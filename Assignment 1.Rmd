@@ -1,0 +1,317 @@
+---
+title: "Assignment 1"
+output: html_document
+---
+
+```{r}
+# 4.1.1 exercise 2
+#(a)
+fibonacci<-numeric(30) 
+fibonacci[2]<-fibonacci[1]<-1
+for(i in 3:30){ fibonacci[i]<- fibonacci[i-1]+ fibonacci[i-2]}
+divide<-numeric(30)
+for(j in 2:30){divide[j]<- fibonacci[j]/fibonacci[j-1]}
+print(divide[2:30])
+
+#(b)
+(1+sqrt(5))/2
+
+#the result of (1) is converging to 1.618034 which is the same with the result of (2)
+
+```
+
+```{r}
+# 4.1.1 exercise 3
+answer<-0
+for( j in 1:5) answer<-answer+ j
+print(answer)
+
+answer<-NULL
+for ( j in 1:5) answer<-c(answer, j)
+print(answer)
+
+answer<-0
+for ( j in 1:5) answer<-c(answer, j)
+print(answer)
+
+answer<-1
+for(j in 1:5) answer<-answer*j
+print(answer)
+
+answer<-3
+for (j in 1:15) answer<-c(answer,(7*answer[j])%%31)
+print(answer)
+
+
+# No, It is hard to predict if I don't know the rule and fail to understand the code. 
+```
+
+```{r}
+# 4.1.2 exercise 4
+
+I<-function(n,P){
+if(n <=3){
+i<-0.04
+return (P*((1+i)^n -1))}else 
+{i<-0.05
+return (P*((1+i)^n -1) ) }}
+
+```
+
+```{r}
+#4.1.2 exercise 5
+
+R<-function(n, P, open =True){
+  if (open ==TRUE){i<-0.005
+  R<- P/(1-(1+i)^(-n))
+  return(R)}
+  else{i<-0.004
+  R<- P/(1-(1+i)^(-n))
+  return(R)}
+}
+
+```
+
+
+```{r}
+# 4.1.3 exercise 2
+
+fibonacci<-c(1,1)
+while( min(fibonacci) > 0)
+{fibonacci<- c( fibonacci, fibonacci[ length(fibonacci)-1] + fibonacci [ length(fibonacci)])
+ }
+print(fibonacci)
+
+```
+
+```{r}
+#4.1.3 exercise 4
+i<-0
+iN<- 0.006
+ while(abs(i-iN)>= 0.000001)
+ { i<- iN
+   iN<-(1-(1+i)^(-20))/19}
+
+print(i)
+
+# if i put another number in i, then I get a different result.
+```
+
+
+```{r}
+# 4.1.3 exercise 5
+iN<- c(0,0.006)
+ while(abs(iN[length(iN)]- iN[length(iN)-1])>= 0.000001)
+ { iN<-c(iN, (1-(1+iN[length(iN)])^(-20))/19)}
+
+
+print(length(iN)-2)
+
+
+```
+
+```{r}
+# 4.1.5 exercise 2
+#(a)
+Eratosthenes<- function(n){
+  if(n >=2) {
+    sieve<-seq(2,n)
+    primes<-c()
+    while (length(sieve)>0) {
+      p<- sieve[1]
+      primes<- c(primes,p)
+      sieve<- sieve [(sieve %% p)!= 0]
+    } 
+    return (primes)
+  } else { 
+    stop (' Input value of n should be at least 2')}
+  }
+Eratosthenes(50)
+
+#(b)
+# if once p>= sqrt(n), that all the remains in 'seive' are prime. It is because that this coding is removing the numbers- multiples of p. This means '(p*1,p*2,...,p*p )<= n' are removed from sieve. Once p>= sqrt(n), then the number multipled by p should be less than p to saitsfy the condition that the result is less than n. But the results are alreay the multiples of numbers less than n. As a conclusion, once p>= sqrt(n), nothing is left to be removed.
+
+#(c)
+Eratosthenes<- function(n){
+  if(n >=2) {
+    sieve<-seq(2,n)
+    primes<-c()
+    while (length(sieve)>0) {
+      p<- sieve[1]
+      primes<- c(primes,p)
+      sieve<- sieve [(sieve %% p)!= 0]
+      if (p>= sqrt(n))break
+              } 
+    return (c(primes, sieve))
+  } else { 
+    stop (' Input value of n should be at least 2')}
+  }
+Eratosthenes(50)
+
+```
+
+```{r}
+#4.2.1 exercise 2
+
+#(a)
+compound.interest<-function(n, P, i.r) {
+  ci<-P* (1+ i.r)^n 
+  return(ci)
+}
+#(b)
+compound.interest(30, 1000, 0.01)
+
+```
+
+```{r}
+# 4.2.1 exercise 1
+
+
+f3<-function(x){
+	6*x^2 -135
+}
+
+bisec1<-function(a,b){
+
+	max<-1000
+	little<-10^(-10)
+	err<-1
+	objectv<-0
+	x0<-(a+b)/2
+
+	while ( objectv<=max && err >= little){
+		if (f3(a)*f3(x0) <=0)	{b<-x0}
+		else	{a<-x0}
+		
+		oldx0<-x0
+		x0<-(a+b)/2
+
+		err<-abs(oldx0-x0)
+		objectv<-objectv+1
+		}
+
+	return(x0)
+}
+
+
+bisec1(2,10)
+
+
+
+```
+
+
+```{r}
+# 4.4.1 exercise 1
+ mergesort <- function (x, decreasing=FALSE) 
+  {if(decreasing==FALSE)
+    { len <-length(x) 
+   if (len < 2) result <- x 
+   else { y <- x[1:(len / 2)] 
+   z <- x[(len/2+1):len] 
+   y <- mergesort(y) 
+   z <- mergesort(z) 
+   result <- c() 
+    while (min(length(y), length(z)) > 0) 
+    {if (y[1] < z[1]) 
+    {  result <- c(result, y[1])
+    y <- y[-1] } 
+    else {  result <- c(result, z[1]) 
+    z <- z[-1] } }
+   if (length(y) > 0)
+   result <- c(result, y) 
+   else result <- c(result, z) } 
+   return(result) }
+ else { 
+   len <-length(x) 
+   if (len < 2) result <- x 
+   else { y <- x[1:(len / 2)] 
+   z <- x[(len/2+1):len] 
+   y <- mergesort(y, decreasing=TRUE) 
+   z <- mergesort(z, decreasing=TRUE) 
+   result <- c() 
+    while (min(length(y), length(z)) > 0) 
+    {if (y[1] < z[1]) 
+    {  result <- c(result, y[1])
+    y <- y[-1] } 
+    else {  result <- c(result, z[1]) 
+    z <- z[-1] } }
+   if (length(y) > 0)
+   result <- c(result, y) 
+   else result <- c(result, z) } 
+return(result) }
+   }
+
+
+```
+
+```{r}
+# 4.4.1 exercise 2
+#(a), (b)
+#install.packages(Deriv)
+
+library(Deriv)
+f<-function(x,y){x+y}
+g<-function(x,y){x^2 + 2*y^2 -2}
+fxi<-Deriv(f,"x")
+fyi<-Deriv(f,"y")
+gxi<-Deriv(g,"x")
+gyi<-Deriv(g,"y")
+x_i<-4
+y_i<-5
+fi<-f(x_i, y_i)
+gi<-g(x_i, y_i)
+while(abs(fi) + (abs(gi)>=0.0001)){
+  df_x <- fxi(x_i, y_i)
+  df_y <- fyi(x_i, y_i)
+  dg_x <- gxi(x_i, y_i)
+  dg_y <- gyi(x_i, y_i)
+  di <- df_x*dg_y - df_y*dg_x
+  x_i <- x_i - (dg_y*fi - df_y*gi)/di
+  y_i <- y_i - (df_x*gi - dg_x*fi)/di
+  fi<-f(x_i, y_i)
+  gi<-g(x_i, y_i)
+  }
+fi
+gi
+
+```
+
+
+```{r}
+#1
+directpoly<- function(x, coef){
+  n<-length(coef)
+  k<-0
+  for( i in 1:n)
+  {k<-k +coef[i]*x^(n-i)}
+  return(k) }
+
+```
+
+```{r}
+#2
+honerpoly<-function(x, coef){
+   n<-length(coef)
+   a<- matrix(0, length(x), n)
+   a[,n]<- coef[1]
+   for( i in (n-1):1)
+   { a[,i]<- a[, i+1]*x + coef[n-i+1]}
+   return(a[,1])}
+
+```
+
+```{r}
+#3
+#(a)
+system.time(directpoly(x=seq(-10,10, length=5000000), c(1, -2,2,3,4,6,7)))
+system.time(honerpoly(x=seq(-10,10, length=5000000), c(1, -2,2,3,4,6,7)))
+
+# the directpoly() takes 3.01, and honerploy takes 1.35. honerpoly is faster than the first one. 
+
+#(b)
+system.time(directpoly(x=seq(-10,10, length=5000000),c(2,17,-3)))
+system.time(honerpoly(x=seq(-10,10, length=5000000), c(2,17,-3)))
+
+# the honerpoly() is faster than directpoly(), but the difference between the time is less than the previous one.  
+```
